@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>甲骨文输入法 · Oracle-Bone-Script-IME</title>
+  <meta name="description" content="在任意网页输入框打汉字，直接输出甲骨文图片。" />
+  <link rel="icon" type="image/svg+xml" href="/glyphs-sprite.svg" />
+  <style>
+    @font-face {
+      font-family: 'OracleBone';
+      src: url('/fonts/FZJIAGW-subset.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #0a0806;
+      --bg-secondary: #1a1410;
+      --bg-card: rgba(212, 165, 116, 0.05);
+      --color-primary: #d4a574;
+      --color-accent: #ffb84d;
+      --color-text: #e8d4b8;
+      --color-muted: #8b7355;
+      --border: rgba(212, 165, 116, 0.2);
+      --mono: 'JetBrains Mono', 'Cascadia Code', 'Courier New', monospace;
+      --sans: -apple-system, BlinkMacSystemFont, 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg-primary);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.6;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(212, 165, 116, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 184, 77, 0.06) 0%, transparent 50%);
+    }
+
+    #app {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 80px; height: 4px;
+      background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+    }
+
+    h1 {
+      font-size: 32px;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(255, 184, 77, 0.3);
+    }
+
+    h1 .en {
+      font-family: var(--mono);
+      font-size: 14px;
+      color: var(--color-muted);
+      font-weight: normal;
+      letter-spacing: 1px;
+      display: block;
+      margin-top: 4px;
+    }
+
+    .subtitle {
+      color: var(--color-muted);
+      font-size: 14px;
+      font-family: var(--mono);
+    }
+
+    .tagline {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 4px 12px;
+      border: 1px solid var(--color-accent);
+      color: var(--color-accent);
+      font-size: 12px;
+      font-family: var(--mono);
+      border-radius: 2px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .container { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 24px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 12px; height: 12px;
+      border-top: 2px solid var(--color-accent);
+      border-left: 2px solid var(--color-accent);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 12px; height: 12px;
+      border-bottom: 2px solid var(--color-accent);
+      border-right: 2px solid var(--color-accent);
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+      font-family: var(--mono);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+      background: var(--bg-primary);
+      color: var(--color-text);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      outline: none;
+      resize: vertical;
+      font-family: var(--sans);
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: var(--color-accent);
+      box-shadow: 0 0 0 1px var(--color-accent);
+    }
+
+    .preview {
+      margin-top: 16px;
+      padding: 24px;
+      background: rgba(255, 184, 77, 0.03);
+      border: 1px dashed var(--color-accent);
+      border-radius: 2px;
+      min-height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'OracleBone', serif;
+      font-size: 64px;
+      color: var(--color-text);
+      word-break: break-all;
+      text-align: center;
+      letter-spacing: 8px;
+    }
+
+    .preview.empty {
+      color: var(--color-muted);
+      font-size: 14px;
+      font-family: var(--mono);
+      letter-spacing: 1px;
+    }
+
+    .preview img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .actions {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 10px 18px;
+      background: transparent;
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+      border-radius: 2px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: var(--mono);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: var(--color-primary);
+      color: var(--bg-primary);
+      box-shadow: 0 0 12px var(--color-primary);
+    }
+
+    button.primary {
+      background: var(--color-accent);
+      color: var(--bg-primary);
+      border-color: var(--color-accent);
+    }
+
+    button.primary:hover {
+      background: transparent;
+      color: var(--color-accent);
+      box-shadow: 0 0 12px var(--color-accent);
+    }
+
+    .status {
+      margin-top: 16px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-family: var(--mono);
+      border-radius: 2px;
+    }
+
+    .status.ok {
+      background: rgba(80, 200, 120, 0.1);
+      color: #50c878;
+      border-left: 2px solid #50c878;
+    }
+
+    .status.err {
+      background: rgba(220, 80, 80, 0.1);
+      color: #dc5050;
+      border-left: 2px solid #dc5050;
+    }
+
+    .char-count {
+      font-size: 11px;
+      color: var(--color-muted);
+      margin-top: 4px;
+      font-family: var(--mono);
+    }
+
+    .server-status {
+      font-size: 11px;
+      color: var(--color-muted);
+      margin-top: 16px;
+      font-family: var(--mono);
+      padding: 8px;
+      background: var(--bg-primary);
+      border-radius: 2px;
+    }
+
+    .server-status span.ok { color: #50c878; }
+    .server-status span.err { color: #dc5050; }
+
+    .footer {
+      margin-top: 32px;
+      text-align: center;
+      color: var(--color-muted);
+      font-size: 12px;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer a {
+      color: var(--color-accent);
+      text-decoration: none;
+      font-family: var(--mono);
+      transition: color 0.2s;
+    }
+
+    .footer a:hover {
+      color: var(--color-primary);
+      text-shadow: 0 0 8px var(--color-accent);
+    }
+
+    .ascii-divider {
+      color: var(--color-muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0;
+      opacity: 0.4;
+      margin: 8px 0;
+      text-align: center;
+    }
+
+    .scan-line {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+      opacity: 0.3;
+      animation: scan 8s linear infinite;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @keyframes scan {
+      0% { top: -2px; }
+      100% { top: 100vh; }
+    }
+
+    .blink { animation: blink 1.5s steps(2) infinite; }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    .status-indicator::before {
+      content: '●';
+      color: var(--color-accent);
+      margin-right: 4px;
+      animation: blink 1.5s steps(2) infinite;
+    }
+
+    code {
+      background: var(--bg-primary);
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-family: var(--mono);
+      color: var(--color-accent);
+      border: 1px solid var(--border);
+      font-size: 11px;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        linear-gradient(rgba(212, 165, 116, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(212, 165, 116, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="scan-line"></div>
+  <div class="grid-overlay"></div>
+
+  <div id="app">
+    <header>
+      <h1>🐘 甲骨文输入法<span class="en">Oracle-Bone-Script-IME · v0.1.0</span></h1>
+      <p class="subtitle">「打汉字出甲骨文」开源输入法</p>
+      <span class="tagline status-indicator">READY · WEB DEMO</span>
+    </header>
+
+    <div class="container">
+      <div class="card">
+        <label for="input">// INPUT.HANZI</label>
+        <textarea id="input" rows="3">我爱甲骨文</textarea>
+        <p class="char-count">CHAR_COUNT: <span id="charCount">5</span></p>
+
+        <div class="actions">
+          <button class="primary" id="btnRender">[ FONT RENDER ]</button>
+          <button id="btnCopy">[ COPY TEXT ]</button>
+        </div>
+
+        <div class="status ok" id="status">// FONT LOADED · READY</div>
+      </div>
+
+      <div class="card">
+        <label>// PREVIEW.GLYPH</label>
+        <div class="preview" id="preview">我爱甲骨文</div>
+
+        <div class="server-status">
+          BACKEND: <span class="err" id="serverStatus">CHECKING...</span><br>
+          ENDPOINT: <code>http://127.0.0.1:19840/oracle/render</code><br>
+          TIP: 图片模式需本地运行 Python FastAPI 服务
+        </div>
+      </div>
+    </div>
+
+    <div class="ascii-divider">═══════════════════════════════════════════════════════════════</div>
+
+    <div class="container">
+      <div class="card">
+        <label>// PROJECT.LINKS</label>
+        <p style="margin-bottom:12px;">
+          📦 <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME" target="_blank" style="color:var(--color-accent);">GitHub 仓库</a>
+        </p>
+        <p style="margin-bottom:12px;">
+          📖 <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/blob/main/docs/MANUAL.md" target="_blank" style="color:var(--color-accent);">用户语法手册</a>
+        </p>
+        <p style="margin-bottom:12px;">
+          🔧 <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/blob/main/docs/ARCHITECTURE.md" target="_blank" style="color:var(--color-accent);">架构设计文档</a>
+        </p>
+        <p>
+          🚀 <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/releases" target="_blank" style="color:var(--color-accent);">下载 v0.1.0 Release</a>
+        </p>
+      </div>
+
+      <div class="card">
+        <label>// USAGE.MODES</label>
+        <p style="margin-bottom:12px;">
+          <span style="color:var(--color-accent);">[1] 文字模式</span><br>
+          安装 FZJIAGW.ttf 字体后，候选面板用甲骨文字体显示。
+        </p>
+        <p style="margin-bottom:12px;">
+          <span style="color:var(--color-accent);">[2] 图片模式</span><br>
+          按 Ctrl+Shift+I 切换，上屏变甲骨文 PNG，对方零门槛查看。
+        </p>
+        <p>
+          <span style="color:var(--color-accent);">[3] OCR 反向</span><br>
+          复制甲骨文图片 → Ctrl+Shift+G → 自动识别为现代汉字。
+        </p>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p>
+        <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME" target="_blank">SOURCE</a>
+        ·
+        <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/releases" target="_blank">RELEASE</a>
+        ·
+        <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/blob/main/LICENSE" target="_blank">LICENSE</a>
+      </p>
+      <p style="margin-top:8px;">
+        基于方正甲骨文（FZJIAGW.ttf）+ librime + Apache-2.0 License<br>
+        © 2026 Oracle-Bone-Script-IME Contributors
+      </p>
+      <div class="ascii-divider">EOF</div>
+    </div>
+  </div>
+
+  <script>
+    const $input = document.getElementById('input');
+    const $preview = document.getElementById('preview');
+    const $charCount = document.getElementById('charCount');
+    const $status = document.getElementById('status');
+    const $btnRender = document.getElementById('btnRender');
+    const $btnCopy = document.getElementById('btnCopy');
+    const $serverStatus = document.getElementById('serverStatus');
+
+    function updateCount() {
+      $charCount.textContent = $input.value.length;
+    }
+
+    function render() {
+      const text = $input.value;
+      $preview.classList.remove('empty');
+      $preview.textContent = text;
+      $status.className = 'status ok';
+      $status.textContent = `// FONT RENDERED · ${text.length} CHARS`;
+    }
+
+    async function copyText() {
+      try {
+        await navigator.clipboard.writeText($input.value);
+        $status.className = 'status ok';
+        $status.textContent = '// COPIED TO CLIPBOARD';
+      } catch (e) {
+        $status.className = 'status err';
+        $status.textContent = '// COPY FAILED · USE Ctrl+C';
+      }
+    }
+
+    async function checkServer() {
+      try {
+        const res = await fetch('http://127.0.0.1:19840/health', { mode: 'no-cors' });
+        $serverStatus.className = 'ok';
+        $serverStatus.textContent = 'ONLINE · READY';
+      } catch (e) {
+        $serverStatus.className = 'err';
+        $serverStatus.textContent = 'OFFLINE · IMAGE MODE UNAVAILABLE';
+      }
+    }
+
+    $input.addEventListener('input', () => { updateCount(); render(); });
+    $btnRender.addEventListener('click', render);
+    $btnCopy.addEventListener('click', copyText);
+
+    // 加载甲骨文字体
+    if (document.fonts && document.fonts.load) {
+      document.fonts.load('64px OracleBone').then(() => {
+        console.log('[OBS-IME] Font loaded');
+        render();
+      });
+    } else {
+      render();
+    }
+
+    checkServer();
+    setInterval(checkServer, 30000);
+  </script>
+</body>
+</html>
