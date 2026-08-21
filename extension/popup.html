@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>甲骨文输入法</title>
+  <style>
+    body { width: 320px; padding: 16px; font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif; }
+    h1 { font-size: 16px; margin: 0 0 12px; color: #2c1810; }
+    .shortcut { display: flex; justify-content: space-between; padding: 8px; background: #f5f0e8; margin: 4px 0; border-radius: 4px; }
+    .shortcut kbd { background: #fff; border: 1px solid #ccc; padding: 2px 6px; border-radius: 3px; font-family: monospace; font-size: 12px; }
+    .status { padding: 8px; margin-top: 12px; border-radius: 4px; text-align: center; font-size: 13px; }
+    .status.ok { background: #e8f5e8; color: #2d6e2d; }
+    .status.err { background: #fde8e8; color: #b22; }
+    a { color: #8b4513; }
+  </style>
+</head>
+<body>
+  <h1>🐘 甲骨文输入法 v0.1.0</h1>
+
+  <p style="font-size:13px;color:#666;margin:0 0 12px;">
+    在任意网页输入框打汉字 → 输出甲骨文图片。
+  </p>
+
+  <div class="shortcut"><span>图片输出</span><kbd>Ctrl+Shift+I</kbd></div>
+  <div class="shortcut"><span>OCR 反向识别</span><kbd>Ctrl+Shift+G</kbd></div>
+
+  <div id="status" class="status">检查中…</div>
+
+  <p style="font-size:11px;color:#999;margin-top:12px;">
+    需先启动本地服务：<br>
+    <code>cd server && python -m app.main</code>
+  </p>
+  <p style="font-size:11px;">
+    <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME" target="_blank">📦 GitHub</a>
+  </p>
+
+  <script src="popup.js"></script>
+</body>
+</html>

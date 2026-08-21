@@ -1,0 +1,9 @@
+/* content.css — 浮动提示框样式 */
+#oracle-bone-toast {
+  animation: oracle-bone-fade-in 0.2s ease-out;
+}
+
+@keyframes oracle-bone-fade-in {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

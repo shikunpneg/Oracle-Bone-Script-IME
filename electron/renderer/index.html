@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>甲骨文输入法 · 桌面端</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", sans-serif;
+      background: #f5f0e8;
+      color: #2c1810;
+      padding: 24px;
+      min-height: 100vh;
+    }
+    h1 { font-size: 20px; margin-bottom: 16px; color: #8b4513; }
+    .card {
+      background: white; border-radius: 8px; padding: 16px;
+      box-shadow: 0 2px 8px rgba(139,69,19,0.1); margin-bottom: 16px;
+    }
+    label { display: block; font-size: 13px; color: #666; margin-bottom: 6px; }
+    input[type="text"] {
+      width: 100%; padding: 10px 12px; font-size: 16px;
+      border: 2px solid #d4a574; border-radius: 4px; outline: none;
+    }
+    input[type="text"]:focus { border-color: #8b4513; }
+    button {
+      padding: 10px 20px; background: #8b4513; color: white;
+      border: none; border-radius: 4px; cursor: pointer;
+      font-size: 14px; margin-top: 8px;
+    }
+    button:hover { background: #6d3410; }
+    button:disabled { background: #ccc; cursor: not-allowed; }
+    .preview {
+      margin-top: 12px; padding: 16px; background: #fffbf0;
+      border: 2px dashed #d4a574; border-radius: 4px;
+      min-height: 80px; text-align: center;
+    }
+    .preview img { max-width: 100%; max-height: 200px; }
+    .status {
+      font-size: 12px; padding: 8px; border-radius: 4px;
+      margin-top: 12px; text-align: center;
+    }
+    .status.ok { background: #e8f5e8; color: #2d6e2d; }
+    .status.err { background: #fde8e8; color: #b22; }
+    .shortcut-info {
+      font-size: 12px; color: #888; margin-top: 16px; line-height: 1.8;
+    }
+    kbd { background: #f0e8d8; padding: 2px 6px; border-radius: 3px;
+          border: 1px solid #d4a574; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <h1>🐘 甲骨文输入法 · 桌面端</h1>
+
+  <div class="card">
+    <label for="inputText">输入汉字（将转换为甲骨文图片）</label>
+    <input type="text" id="inputText" placeholder="例如：我爱甲骨文" value="我爱甲骨文" />
+    <button id="btnRender">🐘 生成甲骨文图片</button>
+    <div class="preview" id="preview">点击上方按钮生成预览</div>
+    <div class="status" id="status">就绪</div>
+  </div>
+
+  <div class="card">
+    <h3 style="font-size:14px;margin-bottom:8px;">OCR 反向识别</h3>
+    <p style="font-size:12px;color:#666;">点击下方按钮，自动读取剪贴板中的甲骨文图片并识别。</p>
+    <button id="btnOCR">📷 OCR 识别</button>
+    <div id="ocrResult" style="margin-top:8px;font-size:14px;"></div>
+  </div>
+
+  <div class="shortcut-info">
+    <strong>全局快捷键：</strong><br>
+    • <kbd>Ctrl+Shift+I</kbd>：渲染剪贴板中的文字为甲骨文图片<br>
+    • <kbd>Ctrl+Shift+G</kbd>：OCR 识别剪贴板中的甲骨文图片<br>
+    • <kbd>Ctrl+V</kbd>：粘贴（自动触发）
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

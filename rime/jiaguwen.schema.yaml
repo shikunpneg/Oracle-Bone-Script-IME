@@ -1,0 +1,83 @@
+# RIME 甲骨文输入方案
+# 文件名：jiaguwen.schema.yaml
+# 安装位置：~/.config/rime/  (Linux) / ~/Library/Rime/  (macOS) / %APPDATA%\Rime\  (Windows)
+# 注册：在 default.custom.yaml 中加入 - schema: jiaguwen
+#
+# 文档：https://rimeinn.github.io/zh-Hant/rime/schema.html
+schema:
+  schema_id: jiaguwen
+  name: 甲骨文输入
+  version: "0.1.0"
+  author: Oracle-Bone-Script-IME 团队
+  description: |
+    甲骨文输入法 —— 打汉字出甲骨文
+    支持两种模式：
+      - 文字模式：候选面板用方正甲骨文字体渲染（需装字体）
+      - 图片模式：上屏后自动变甲骨文 PNG（需开启渲染服务）
+  dependencies:
+    - luna_pinyin        # 依赖小狼毫拼音（或其他拼音方案）
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [中文, 西文]
+  - name: full_shape
+    reset: 0
+    states: [半角, 全角]
+  # 自定义开关：图片输出模式
+  - name: oracle_image_mode
+    reset: 0
+    states: [文字, 图片]
+  # 自定义开关：OCR 反向模式（粘贴时自动识别）
+  - name: oracle_ocr_mode
+    reset: 0
+    states: [关闭, 启用]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - navigator
+    - express_editor
+    - lua_processor@oracle_image_trigger  # commit 时同步触发图片生成
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - echo_translator
+    - punct_translator
+    - script_translator
+    - lua_translator@oracle_translator    # 在候选后追加"🐘甲骨文"标签
+  filters:
+    - simplifier
+    - uniquifier
+    - lua_filter@oracle_filter            # 过滤掉无对应甲骨文字的候选
+
+speller:
+  alphabet: abcdefghijklmnopqrstuvwxyz
+  delimiter: " '"
+  algebra:
+    # 常用简拼
+    - abbrev/^([a-z]).([a-z])/$1$2/
+    - abbrev/^([a-z]).([a-z])/$1$2/
+
+key_binder:
+  bindings:
+    # 切换"图片输出模式"
+    - { when: always, accept: Control+Shift+I, toggle: oracle_image_mode }
+    # 切换"OCR 反向模式"
+    - { when: always, accept: Control+Shift+R, toggle: oracle_ocr_mode }
+    # 触发 OCR（截图/剪贴板）
+    - { when: always, accept: Control+Shift+G, select: .send_oracle_ocr }
+
+style:
+  # 候选面板字体（需系统已安装方正甲骨文）
+  font_face: FZJIAGW
+  font_point: 18
+  horizontal: true
+  inline_preedit: false
