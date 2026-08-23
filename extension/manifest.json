@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "甲骨文输入法 · Oracle Bone IME",
+  "version": "0.1.0",
+  "description": "在任意网页输入框打汉字，输出甲骨文图片。整合 HUST-OBC OCR 与方正甲骨文字体。",
+  "default_locale": "zh_CN",
+  "author": "Oracle-Bone-Script-IME 团队",
+  "homepage_url": "https://github.com/shikunpneg/Oracle-Bone-Script-IME",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "permissions": [
+    "activeTab",
+    "clipboardWrite",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:19840/*",
+    "http://localhost:19840/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "甲骨文输入法",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "commands": {
+    "trigger-oracle-image": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+I",
+        "mac": "Command+Shift+I"
+      },
+      "description": "触发甲骨文图片输出（Ctrl+Shift+I）"
+    },
+    "trigger-oracle-ocr": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+G",
+        "mac": "Command+Shift+G"
+      },
+      "description": "OCR 反向识别（Ctrl+Shift+G）"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["fonts/*.woff2", "glyphs/*.png"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

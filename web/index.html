@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>甲骨文输入法 · 在线演示</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
+            color: #e8e8e8;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: #888; margin-bottom: 3rem; font-size: 1.1rem; }
+        
+        .demo-section { margin-bottom: 3rem; }
+        .demo-section h2 { font-size: 1.5rem; margin-bottom: 1.5rem; color: #ccc; border-bottom: 1px solid #333; padding-bottom: 0.5rem; }
+        
+        .char-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 1rem; }
+        .char-card {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .char-card:hover { transform: translateY(-4px); border-color: #555; }
+        .char-card img { width: 80px; height: 80px; object-fit: contain; margin-bottom: 0.5rem; }
+        .char-card .label { font-size: 1.2rem; font-weight: 600; color: #fff; }
+        
+        .sentence-demo {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .sentence-demo img { max-width: 100%; height: auto; border-radius: 8px; }
+        .sentence-label { margin-top: 1rem; font-size: 1.1rem; color: #aaa; }
+        
+        .feature-box {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .feature-box h3 { margin-bottom: 1rem; color: #fff; }
+        .feature-box ul { list-style: none; }
+        .feature-box li { padding: 0.5rem 0; color: #aaa; position: relative; padding-left: 1.5rem; }
+        .feature-box li::before { content: "✓"; color: #4ade80; position: absolute; left: 0; }
+        
+        .links { display: flex; gap: 1rem; margin-top: 2rem; flex-wrap: wrap; }
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #e8e8e8;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .link-btn:hover { background: #333; border-color: #666; transform: translateY(-2px); }
+        .link-btn.primary { background: #3b82f6; border-color: #3b82f6; }
+        .link-btn.primary:hover { background: #2563eb; }
+        
+        .mode-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #3b82f6;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>甲骨文输入法</h1>
+        <p class="subtitle">打汉字 · 出甲骨文 · 像搜狗一样自然</p>
+        
+        <section class="demo-section">
+            <h2>单字渲染演示</h2>
+            <p style="color: #888; margin-bottom: 1rem;">基于方正甲骨文 FZJIAGW.ttf 实时渲染，共 1431 字已释甲骨文字</p>
+            <div class="char-grid">
+                <div class="char-card"><img src="demo_images/甲.png" alt="甲"><div class="label">甲</div></div>
+                <div class="char-card"><img src="demo_images/乙.png" alt="乙"><div class="label">乙</div></div>
+                <div class="char-card"><img src="demo_images/丙.png" alt="丙"><div class="label">丙</div></div>
+                <div class="char-card"><img src="demo_images/丁.png" alt="丁"><div class="label">丁</div></div>
+                <div class="char-card"><img src="demo_images/我.png" alt="我"><div class="label">我</div></div>
+                <div class="char-card"><img src="demo_images/爱.png" alt="爱"><div class="label">爱</div></div>
+                <div class="char-card"><img src="demo_images/中.png" alt="中"><div class="label">中</div></div>
+                <div class="char-card"><img src="demo_images/华.png" alt="华"><div class="label">华</div></div>
+                <div class="char-card"><img src="demo_images/骨.png" alt="骨"><div class="label">骨</div></div>
+                <div class="char-card"><img src="demo_images/文.png" alt="文"><div class="label">文</div></div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>句子级演示</h2>
+            <div class="sentence-demo">
+                <img src="demo_images/sentence.png" alt="我爱中华甲骨文">
+                <div class="sentence-label">输入：我爱中华甲骨文 → 实时渲染为甲骨文图片</div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>核心模式</h2>
+            <div class="feature-box">
+                <h3>🖼️ 图片输出模式 <span class="mode-badge">推荐</span></h3>
+                <p style="color: #aaa; margin-bottom: 1rem;">对方 <strong>零门槛</strong> 看到甲骨文，无需安装任何字体</p>
+                <ul>
+                    <li>按 <kbd>Ctrl+Shift+I</kbd> 切换到图片模式</li>
+                    <li>在任意输入框打汉字（如："我爱甲骨文"）</li>
+                    <li>自动转为透明背景 PNG 图片并上屏</li>
+                    <li>QQ/微信/钉钉/飞书/网页/IDE 全兼容</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>🔤 文字输出模式</h3>
+                <p style="color: #aaa; margin-bottom: 1rem;">候选面板用甲骨文字体渲染，需对方安装字体</p>
+                <ul>
+                    <li>安装 <a href="https://www.foundertype.com/" target="_blank" style="color: #3b82f6;">方正甲骨文字体</a>（免费商用）</li>
+                    <li>按 <kbd>Ctrl+Shift+O</kbd> 切换到文字模式</li>
+                    <li>候选框直接显示甲骨文，上屏即为文本</li>
+                    <li>适合文档编写、代码注释等场景</li>
+                </ul>
+            </div>
+            <div class="feature-box">
+                <h3>🔍 OCR 反向识别</h3>
+                <p style="color: #aaa; margin-bottom: 1rem;">看到甲骨文图片，自动识别为现代汉字</p>
+                <ul>
+                    <li>启动服务：<code>python server/app/main.py</code></li>
+                    <li>POST 请求：<code>curl -X POST http://127.0.0.1:19840/oracle/ocr -F "image=@xxx.png"</code></li>
+                    <li>返回 Top-5 现代汉字候选</li>
+                </ul>
+            </div>
+        </section>
+        
+        <div class="links">
+            <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME" class="link-btn primary" target="_blank">GitHub 仓库</a>
+            <a href="https://github.com/shikunpneg/Oracle-Bone-Script-IME/releases" class="link-btn" target="_blank">下载 Release</a>
+            <a href="docs/MANUAL.md" class="link-btn" target="_blank">语法手册</a>
+            <a href="docs/IMAGE_MODE.md" class="link-btn" target="_blank">图片模式详解</a>
+        </div>
+    </div>
+</body>
+</html>

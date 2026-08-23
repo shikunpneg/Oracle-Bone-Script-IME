@@ -1,0 +1,82 @@
+# 字体（不进 git，通过 download_fonts.sh 下载）
+assets/fonts/*.ttf
+assets/fonts/*.otf
+assets/fonts/*.woff
+assets/fonts/*.woff2
+
+# 构建产物
+dist/fonts/*.woff2
+dist/fonts/*.ttf
+dist/glyphs/*.png
+dist/glyphs-sprite.svg
+
+# 模型权重（不进 git，通过 download_weights.sh 下载）
+weights/*.pt
+weights/*.pth
+weights/*.onnx
+weights/*.bin
+weights/*.safetensors
+
+# 数据集原始文件（不进 git）
+data/raw/
+data/HUST-OBC/
+data/EVOBC/
+data/PD-OBS/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Node
+node_modules/
+dist/
+.parcel-cache/
+.vite/
+
+# Electron
+electron/dist/
+electron/build/
+electron/out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# 测试覆盖率
+.coverage
+htmlcov/
+.pytest_cache/
+
+# 环境配置
+.env
+.env.local
+.env.*.local
+
+# 临时
+tmp/
+temp/
+*.tmp
+
+# 浏览器扩展打包
+extension/*.zip
+extension/*.crx
+
+# Electron 打包
+electron/release/
+electron/dist_*/

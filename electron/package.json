@@ -1,0 +1,49 @@
+{
+  "name": "oracle-bone-script-ime-desktop",
+  "version": "0.1.0",
+  "description": "甲骨文输入法桌面端 - Electron App",
+  "main": "main.js",
+  "author": "Oracle-Bone-Script-IME 团队",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "build": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.0"
+  },
+  "dependencies": {
+    "robotjs": "^0.6.0",
+    "axios": "^1.6.0"
+  },
+  "build": {
+    "appId": "com.shikunpneg.oracle-bone-ime",
+    "productName": "甲骨文输入法",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "../dist/fonts/**/*",
+      "../server/**/*",
+      "../assets/fonts/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icons/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icons/icon.icns"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "icons/icon.png",
+      "category": "Utility"
+    }
+  }
+}
