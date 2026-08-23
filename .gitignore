@@ -80,3 +80,5 @@ extension/*.crx
 # Electron 打包
 electron/release/
 electron/dist_*/
+# workflow 文件由本地保留（token 无 workflow scope 时不推送）
+.github/workflows/ci.yml
